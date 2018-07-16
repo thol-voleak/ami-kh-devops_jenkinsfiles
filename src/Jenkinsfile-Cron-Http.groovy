@@ -1,5 +1,5 @@
 import groovy.json.JsonSlurper
-def invokerHttp(){
+def __call(){
     def jsonSlurper = new JsonSlurper()
     def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/configure.json"
     def reader = new BufferedReader(new InputStreamReader(new FileInputStream("$filePath"),"UTF-8"))
@@ -37,15 +37,15 @@ def invokerHttp(){
 pipeline {
     agent any
     stages{
-        stage("Regression Test"){
+        stage("Regression"){
             steps{
                 build("Test-Jmeter")
             }
         }
-        stage("Invoker") {
+        stage("Call") {
             steps{
                 script{
-                    invokerHttp()
+                    __call()
                 }
             }
         }
