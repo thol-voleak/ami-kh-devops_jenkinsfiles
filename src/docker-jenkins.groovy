@@ -28,9 +28,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    def user = __get_user()
-                    def token = __get_token()
-                    sh "echo user: ${user} , token: ${token}"
+                    sh "date"
                 }
             }
         }
