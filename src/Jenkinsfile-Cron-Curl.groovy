@@ -40,12 +40,6 @@ pipeline {
                     def re = sh (script: "curl -X ${uri}", returnStdout: true)
                     def status = getStatus("${re}")
                     def message = getMessage("${re}")
-                    sh "echo ${status}"
-                    sh "echo ${message}"
-                    /*
-                    if(status.equals(false)){
-                        error "build fail"
-                    }*/
                 }
             }
         }
