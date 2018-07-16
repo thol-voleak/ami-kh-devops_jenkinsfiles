@@ -51,12 +51,17 @@ pipeline {
                 sh 'docker build -t myapp:latest .'
             }
         }
-        /*
         stage('Docker Push') {
             steps {
-                sh "docker tag myapp docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest"
-                sh 'docker push docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest'
+                script {
+                    def user = __get_user()
+                    def token = __get_token()
+                    sh "echo user: ${user} , token: ${token}"
+                    sh "docker login -u ${user} -p ${token} docker-registry-default.apps.master-ocp.truemoney.com.kh"
+                }
+                //sh "docker tag myapp docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest"
+                //sh 'docker push docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest'
             }
-        }*/
+        }
     }
 }
