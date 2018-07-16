@@ -58,9 +58,9 @@ pipeline {
                     def token = __get_token()
                     sh "echo user: ${user} , token: ${token}"
                     sh "docker login -u ${user} -p ${token} docker-registry-default.apps.master-ocp.truemoney.com.kh"
+                    sh "docker tag myapp docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest"
+                    sh 'docker push docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest'
                 }
-                //sh "docker tag myapp docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest"
-                //sh 'docker push docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest'
             }
         }
     }
