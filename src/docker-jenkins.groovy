@@ -51,11 +51,12 @@ pipeline {
                 sh 'docker build -t myapp:latest .'
             }
         }
+        /*
         stage('Docker Push') {
             steps {
                 sh "docker tag myapp docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest"
                 sh 'docker push docker-registry-default.apps.master-ocp.truemoney.com.kh/ads/myapp:latest'
             }
-        }
+        }*/
     }
 }
