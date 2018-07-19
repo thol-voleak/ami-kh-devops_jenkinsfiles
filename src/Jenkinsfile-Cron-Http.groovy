@@ -1,4 +1,6 @@
 import groovy.json.JsonSlurper
+
+@NonCPS
 def __call(){
     def jsonSlurper = new JsonSlurper()
     def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/url-config.json"
@@ -35,25 +37,4 @@ def __call(){
         error(respond.errorCode)
     }
 }
-pipeline {
-    agent any
-    stages{
-        stage("Call") {
-            steps{
-                script{
-                    __call()
-                }
-            }
-        }
-    }
-    post {
-        success{
-            sh "echo sucess"
-            //slackSend (color: '#33ff36', message: "Sucessed built: Job '${env.JOB_NAME} [${env.BUILD_NUMBER} (<${env.BUILD_URL}|Detail>)]'")
-        }
-        failure {
-            sh "echo failed"
-            //slackSend (color: '#FF0000', message: "Failed build:: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]\nReason: [${env.FAILURE_STAGE} (<${env.BUILD_URL}|Detail>)]'")
-        }
-    }
-}
+__call()
