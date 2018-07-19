@@ -19,28 +19,28 @@ def __call(){
             def data = "$configuration.data"
             post.getOutputStream().write(data.getBytes("UTF-8"));
         }
-        def postRC = post.getResponseCode();
-        if (!postRC.equals(200)) {
-            env.FAILURE_STAGE = "Error Code: " + post.getResponseCode() + ", Messages: Please click link ->"
-            error("Error Code: " + post.getResponseCode())
-        }
     }catch (Exception e){
         println(e.message)
         env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection request timeout"
         error("Connection request timeout")
     }
+    def postRC = post.getResponseCode();
+    if (!postRC.equals(200)) {
+        env.FAILURE_STAGE = "Error Code: " + post.getResponseCode() + ", Messages: Please click link ->"
+        error("Error Code: " + post.getResponseCode())
+    }
     try {
         def respondStr = post.getInputStream().getText()
         def respond = jsonSlurper.parseText(respondStr)
         assert respond instanceof Map
-        if (respond.status == "F") {
-            env.FAILURE_STAGE = "Error Code: " + respond.errorCode + ", Message: " + respond.onlyMessage
-            error(respond.errorCode)
-        }
     }catch (Exception e){
         println(e.message)
         env.FAILURE_STAGE ="Error Code: SYS0002, Messages: Incorrect respond format"
         error("Incorrect respond format")
+    }
+    if (respond.status == "F") {
+        env.FAILURE_STAGE = "Error Code: " + respond.errorCode + ", Message: " + respond.onlyMessage
+        error(respond.errorCode)
     }
 }
 pipeline {
