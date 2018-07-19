@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurper
 def __call(){
     def jsonSlurper = new JsonSlurper()
-    def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/configure.json"
+    def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/url-config.json"
     def reader = new BufferedReader(new InputStreamReader(new FileInputStream("$filePath"),"UTF-8"))
     def configuration = jsonSlurper.parse(reader)
     assert configuration instanceof Map
@@ -37,11 +37,6 @@ def __call(){
 pipeline {
     agent any
     stages{
-        stage("Regression"){
-            steps{
-                build("Test-Jmeter")
-            }
-        }
         stage("Call") {
             steps{
                 script{

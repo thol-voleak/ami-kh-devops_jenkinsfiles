@@ -52,7 +52,7 @@ pipeline {
         stage('Docker Push') {
             steps {
                 script {
-                    def user = __get_user()
+                    def user = "openshift"
                     def token = __get_token()
                     sh "echo user: ${user} , token: ${token}"
                     sh "docker login -u ${user} -p ${token} docker-registry-default.apps.master-ocp.truemoney.com.kh"
