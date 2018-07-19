@@ -24,7 +24,7 @@ def __call(){
             env.FAILURE_STAGE = "Error Code: " + post.getResponseCode() + ", Messages: Please click link ->"
             error("Error Code: " + post.getResponseCode())
         }
-        try {
+       // try {
             def respondStr = post.getInputStream().getText()
             def respond = jsonSlurper.parseText(respondStr)
             assert respond instanceof Map
@@ -32,11 +32,11 @@ def __call(){
                 env.FAILURE_STAGE = "Error Code: " + respond.errorCode + ", Message: " + respond.onlyMessage
                 error(respond.errorCode)
             }
-        }catch (Exception e){
+        /*}catch (Exception e){
             println(e.message)
             env.FAILURE_STAGE ="Error Code: SYS0002, Messages: Incorrect respond format"
             error("Incorrect respond format")
-        }
+        }*/
     }catch (Exception e){
         println(e.message)
         env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection request timeout"
