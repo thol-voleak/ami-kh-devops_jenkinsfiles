@@ -11,8 +11,8 @@ def __call(){
         println("$configuration.url")
         post = new URL("$configuration.url").openConnection();
         post.setRequestMethod("$configuration.method")
-        post.setConnectTimeout(30000)
-        post.setReadTimeout(30000)
+        post.setConnectTimeout(600000)
+        post.setReadTimeout(600000)
         post.setDoOutput(true)
         if ("$configuration.method" == "POST") {
             post.setRequestProperty("Content-Type", "application/json")
