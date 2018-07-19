@@ -26,14 +26,20 @@ def __call(){
         }
     }catch (Exception e){
         println(e.message)
-        env.FAILURE_STAGE ="Connection request timeout"
+        env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection request timeout"
         error("Connection request timeout")
     }
-    def respond = jsonSlurper.parseText(post.getInputStream().getText())
-    assert respond instanceof Map
-    if(respond.status=="F"){
-        env.FAILURE_STAGE = "Error Code: " + respond.errorCode + ", Message: " + respond.onlyMessage
-        error(respond.errorCode)
+    try {
+        def respond = jsonSlurper.parseText(post.getInputStream().getText())
+        assert respond instanceof Map
+        if (respond.status == "F") {
+            env.FAILURE_STAGE = "Error Code: " + respond.errorCode + ", Message: " + respond.onlyMessage
+            error(respond.errorCode)
+        }
+    }catch (Exception e){
+        println(e.message)
+        env.FAILURE_STAGE ="Error Code: SYS0002, Messages: Incorrect respond format"
+        error("Incorrect respond format")
     }
 }
 pipeline {
@@ -50,11 +56,11 @@ pipeline {
     post {
         success{
             sh "echo sucess"
-            //slackSend (color: '#33ff36', message: "Sucessed built: Job '${env.JOB_NAME} [${env.BUILD_NUMBER} (<${env.BUILD_URL}|Detail>)]'")
+            slackSend (color: '#33ff36', message: "Sucessed built: Job '${env.JOB_NAME} [${env.BUILD_NUMBER} (<${env.BUILD_URL}|Detail>)]'")
         }
         failure {
             sh "echo failed"
-            //slackSend (color: '#FF0000', message: "Failed build:: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]\nReason: [${env.FAILURE_STAGE} (<${env.BUILD_URL}|Detail>)]'")
+            slackSend (color: '#FF0000', message: "Failed build:: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]\nReason: [${env.FAILURE_STAGE} (<${env.BUILD_URL}|Detail>)]'")
         }
     }
 }
