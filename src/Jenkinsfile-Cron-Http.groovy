@@ -29,9 +29,10 @@ def __call(){
         env.FAILURE_STAGE = "Error Code: " + post.getResponseCode() + ", Messages: Please click link ->"
         error("Error Code: " + post.getResponseCode())
     }
+    def respond = null
     try {
         def respondStr = post.getInputStream().getText()
-        def respond = jsonSlurper.parseText(respondStr)
+        respond = jsonSlurper.parseText(respondStr)
         assert respond instanceof Map
     }catch (Exception e){
         println(e.message)
