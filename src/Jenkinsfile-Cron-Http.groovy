@@ -7,6 +7,7 @@ def __call(){
     assert configuration instanceof Map
     def post = null
     try {
+        println("$configuration.url")
         post = new URL("$configuration.url").openConnection();
         post.setRequestMethod("$configuration.method")
         post.setConnectTimeout(30000)
