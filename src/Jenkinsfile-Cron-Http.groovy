@@ -24,7 +24,7 @@ def __call(){
             error("Error Code: " + post.getResponseCode())
         }
     }catch (Exception e){
-        e.printStackTrace()
+        println(e.message)
         env.FAILURE_STAGE ="Connection request timeout"
         error("Connection request timeout")
     }
