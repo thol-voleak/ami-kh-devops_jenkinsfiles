@@ -30,8 +30,8 @@ def __call(){
         error("Connection request timeout")
     }
     try {
-        def respodStr = post.getInputStream().getText()
-        def respond = jsonSlurper.parseText(respodStr)
+        def respondStr = post.getInputStream().getText()
+        def respond = jsonSlurper.parseText(respondStr)
         assert respond instanceof Map
         if (respond.status == "F") {
             env.FAILURE_STAGE = "Error Code: " + respond.errorCode + ", Message: " + respond.onlyMessage
