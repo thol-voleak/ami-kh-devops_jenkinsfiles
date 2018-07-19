@@ -8,7 +8,7 @@ def __call(){
     def configuration = jsonSlurper.parse(reader)
     assert configuration instanceof Map
     def post = null
-    try {
+    //try {
         println("$configuration.url")
         post = new URL("$configuration.url").openConnection();
         post.setRequestMethod("$configuration.method")
@@ -25,11 +25,11 @@ def __call(){
             env.FAILURE_STAGE = "Error Code: " + post.getResponseCode() + ", Messages: Please click link ->"
             error("Error Code: " + post.getResponseCode())
         }
-    }catch (Exception e){
+    /*}catch (Exception e){
         println(e.message)
         env.FAILURE_STAGE ="Connection request timeout"
         error("Connection request timeout")
-    }
+    }*/
     def respond = jsonSlurper.parseText(post.getInputStream().getText())
     assert respond instanceof Map
     if(respond.status=="F"){
@@ -37,4 +37,25 @@ def __call(){
         error(respond.errorCode)
     }
 }
-__call()
+pipeline {
+    agent any
+    stages{
+        stage("Call") {
+            steps{
+                script{
+                    __call()
+                }
+            }
+        }
+    }
+    post {
+        success{
+            sh "echo sucess"
+            //slackSend (color: '#33ff36', message: "Sucessed built: Job '${env.JOB_NAME} [${env.BUILD_NUMBER} (<${env.BUILD_URL}|Detail>)]'")
+        }
+        failure {
+            sh "echo failed"
+            //slackSend (color: '#FF0000', message: "Failed build:: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]\nReason: [${env.FAILURE_STAGE} (<${env.BUILD_URL}|Detail>)]'")
+        }
+    }
+}
