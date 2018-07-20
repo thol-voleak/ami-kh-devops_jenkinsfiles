@@ -2,8 +2,8 @@ import groovy.json.JsonSlurper
 
 def __call(){
     def jsonSlurper = new JsonSlurper()
-    //def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/url-config.json"
-    def filePath = "url-config.json"
+    def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/url-config.json"
+    //def filePath = "url-config.json"
     def reader = new BufferedReader(new InputStreamReader(new FileInputStream("$filePath"),"UTF-8"))
     def configuration = jsonSlurper.parse(reader)
     assert configuration instanceof Map
