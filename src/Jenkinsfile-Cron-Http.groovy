@@ -3,7 +3,6 @@ import groovy.json.JsonSlurper
 def __call(){
     def jsonSlurper = new JsonSlurper()
     def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/url-config.json"
-    //def filePath = "url-config.json"
     def reader = new BufferedReader(new InputStreamReader(new FileInputStream("$filePath"),"UTF-8"))
     def configuration = jsonSlurper.parse(reader)
     assert configuration instanceof Map
@@ -15,7 +14,6 @@ def __call(){
         post.setRequestMethod("$configuration.method")
         println(configuration.timeout)
         if(configuration.timeout == null){
-            println("zzzzzzzzzzzzzzzzzzzzzz")
             configuration.timeout = 60000
         }
         println(configuration.timeout)
@@ -30,12 +28,12 @@ def __call(){
         postRC = post.getResponseCode();
     }catch (SocketTimeoutException et){
         println(et.message)
-        env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection read timeout"
+        env.FAILURE_STAGE ="Error Code: SYS0003, Messages: " + et.message
         error("Connection read timeout")
     }catch (Exception e){
         println(e.message)
-        env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection request timeout"
-        error("Connection request timeout")
+        env.FAILURE_STAGE ="Error Code: SYS0001, Messages: " + e.message
+        error("General Error")
     }
     if (!postRC.equals(200)) {
         env.FAILURE_STAGE = "Error Code: " + post.getResponseCode() + ", Messages: Please click link ->"
@@ -56,7 +54,6 @@ def __call(){
         error(respond.errorCode)
     }
 }
-//__call()
 
 pipeline {
     agent any
