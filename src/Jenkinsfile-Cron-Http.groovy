@@ -25,7 +25,7 @@ def __call(){
             def data = "$configuration.data"
             post.getOutputStream().write(data.getBytes("UTF-8"));
         }
-    }catch (SocketTimeoutException e){
+    }catch (java.net.SocketTimeoutException e){
         println(e.message)
         env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection read timeout"
         error("Connection read timeout")
