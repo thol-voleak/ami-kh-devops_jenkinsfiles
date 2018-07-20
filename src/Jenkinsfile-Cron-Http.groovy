@@ -7,24 +7,34 @@ def __call(){
     def configuration = jsonSlurper.parse(reader)
     assert configuration instanceof Map
     def post = null
+    def postRC
     try {
         println("$configuration.url")
         post = new URL("$configuration.url").openConnection();
         post.setRequestMethod("$configuration.method")
-        post.setConnectTimeout(600000)
-        post.setReadTimeout(600000)
+        println(configuration.timeout)
+        if(configuration.timeout == null){
+            configuration.timeout = 60000
+        }
+        println(configuration.timeout)
+        post.setConnectTimeout(configuration.timeout)
+        post.setReadTimeout(configuration.timeout)
         post.setDoOutput(true)
         if ("$configuration.method" == "POST") {
             post.setRequestProperty("Content-Type", "application/json")
             def data = "$configuration.data"
             post.getOutputStream().write(data.getBytes("UTF-8"));
         }
+        postRC = post.getResponseCode();
+    }catch (SocketTimeoutException et){
+        println(et.message)
+        env.FAILURE_STAGE ="Error Code: SYS0003, Messages: " + et.message
+        error("Connection read timeout")
     }catch (Exception e){
         println(e.message)
-        env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection request timeout"
-        error("Connection request timeout")
+        env.FAILURE_STAGE ="Error Code: SYS0001, Messages: " + e.message
+        error("General Error")
     }
-    def postRC = post.getResponseCode();
     if (!postRC.equals(200)) {
         env.FAILURE_STAGE = "Error Code: " + post.getResponseCode() + ", Messages: Please click link ->"
         error("Error Code: " + post.getResponseCode())
@@ -44,6 +54,7 @@ def __call(){
         error(respond.errorCode)
     }
 }
+
 pipeline {
     agent any
     stages{

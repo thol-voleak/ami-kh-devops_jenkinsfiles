@@ -1,0 +1,5 @@
+{
+  "method": "POST" ,
+  "timeout":1,
+  "url":"http://helloworld-test1.apps.master-ocp.truemoney.com.kh/test"
+}
