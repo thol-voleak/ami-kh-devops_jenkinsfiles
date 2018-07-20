@@ -2,7 +2,8 @@ import groovy.json.JsonSlurper
 
 def __call(){
     def jsonSlurper = new JsonSlurper()
-    def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/url-config.json"
+    //def filePath = "/var/jenkins_home/jobs/${env.JOB_NAME}/url-config.json"
+    def filePath = "url-config.json"
     def reader = new BufferedReader(new InputStreamReader(new FileInputStream("$filePath"),"UTF-8"))
     def configuration = jsonSlurper.parse(reader)
     assert configuration instanceof Map
@@ -25,7 +26,7 @@ def __call(){
             def data = "$configuration.data"
             post.getOutputStream().write(data.getBytes("UTF-8"));
         }
-    }catch (java.net.SocketTimeoutException e){
+    }catch (SocketTimeoutException e){
         println(e.message)
         env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection read timeout"
         error("Connection read timeout")
@@ -54,6 +55,8 @@ def __call(){
         error(respond.errorCode)
     }
 }
+//__call()
+
 pipeline {
     agent any
     stages{
