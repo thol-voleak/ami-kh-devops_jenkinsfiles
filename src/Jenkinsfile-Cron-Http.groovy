@@ -28,10 +28,10 @@ def __call(){
             post.getOutputStream().write(data.getBytes("UTF-8"));
         }
         postRC = post.getResponseCode();
-    /*}catch (SocketTimeoutException et){
+    }catch (SocketTimeoutException et){
         println(et.message)
         env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection read timeout"
-        error("Connection read timeout")*/
+        error("Connection read timeout")
     }catch (Exception e){
         println(e.message)
         env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection request timeout"
