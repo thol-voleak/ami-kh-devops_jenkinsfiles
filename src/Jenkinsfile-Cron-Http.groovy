@@ -14,9 +14,11 @@ def __call(){
         println(configuration.timeout)
         if(configuration.timeout == null){
             println("zzzzzzzzzzzzzzzzzzzzzz")
+            configuration.timeout = 60000
         }
-        post.setConnectTimeout(30000)
-        post.setReadTimeout(30000)
+        println(configuration.timeout)
+        post.setConnectTimeout(configuration.timeout)
+        post.setReadTimeout(configuration.timeout00)
         post.setDoOutput(true)
         if ("$configuration.method" == "POST") {
             post.setRequestProperty("Content-Type", "application/json")
