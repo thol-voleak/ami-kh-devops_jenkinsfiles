@@ -11,6 +11,10 @@ def __call(){
         println("$configuration.url")
         post = new URL("$configuration.url").openConnection();
         post.setRequestMethod("$configuration.method")
+        println($configuration.timeout)
+        if($configuration.timeout == null){
+            println("zzzzzzzzzzzzzzzzzzzzzz")
+        }
         post.setConnectTimeout(30000)
         post.setReadTimeout(30000)
         post.setDoOutput(true)
