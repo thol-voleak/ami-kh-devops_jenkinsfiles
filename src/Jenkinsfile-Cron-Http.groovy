@@ -8,6 +8,7 @@ def __call(){
     def configuration = jsonSlurper.parse(reader)
     assert configuration instanceof Map
     def post = null
+    def postRC
     try {
         println("$configuration.url")
         post = new URL("$configuration.url").openConnection();
@@ -26,6 +27,7 @@ def __call(){
             def data = "$configuration.data"
             post.getOutputStream().write(data.getBytes("UTF-8"));
         }
+        postRC = post.getResponseCode();
     /*}catch (SocketTimeoutException et){
         println(et.message)
         env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection read timeout"
@@ -35,7 +37,6 @@ def __call(){
         env.FAILURE_STAGE ="Error Code: SYS0001, Messages: Connection request timeout"
         error("Connection request timeout")
     }
-    def postRC = post.getResponseCode();
     if (!postRC.equals(200)) {
         env.FAILURE_STAGE = "Error Code: " + post.getResponseCode() + ", Messages: Please click link ->"
         error("Error Code: " + post.getResponseCode())
