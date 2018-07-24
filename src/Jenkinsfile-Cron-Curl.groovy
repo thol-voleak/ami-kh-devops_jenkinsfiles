@@ -7,7 +7,7 @@ pipeline {
             steps{
                 script{
                     sh "echo zzzzzz ${CURL_URL}"
-                    def re = sh (script: "curl -X ${CURL_URL}", returnStdout: true)
+                    def re = sh (script: "curl -X ${METHOD} ${CURL_URL}", returnStdout: true)
                     def status = getStatus("${re}")
                     def message = getMessage("${re}")
                 }
