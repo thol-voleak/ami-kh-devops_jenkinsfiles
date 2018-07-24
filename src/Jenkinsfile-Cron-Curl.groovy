@@ -1,11 +1,11 @@
 import groovy.json.JsonSlurper
-def checkStatus(respondStr){
+def __check_status(respond_str){
     def jsonSlurper = new JsonSlurper()
-    def respondJson = jsonSlurper.parseText(respondStr)
-    assert respondJson instanceof Map
-    if(respondJson.status!="T"){
-        def msg = respondJson.Message==null?respondJson.error:respondJson.Message
-        def code = respondJson.errorCode==null?respondJson.status:respondJson.errorCode
+    def respond_json = jsonSlurper.parseText(respond_str)
+    assert respond_json instanceof Map
+    if(respond_json.status!="T"){
+        def msg = respond_json.Message==null?respond_json.error:respond_json.Message
+        def code = respond_json.errorCode==null?respond_json.status:respond_json.errorCode
         env.FAILURE_STAGE = "StatusCode: ${code} ,Message: ${msg}" 
         error("${code}")
     }
@@ -13,12 +13,11 @@ def checkStatus(respondStr){
 pipeline {
     agent any
     stages{
-        stage("Invoker") {
+        stage("__call") {
             steps{
-                script{
-                    
+                script{   
                     def re = sh (script: "curl -X ${METHOD} ${CURL_URL}", returnStdout: true)
-                    sh "echo zzzzzz ${re}"
+                    sh "echo repond: ${re}"
                     checkStatus("${re}")
                 }
             }
