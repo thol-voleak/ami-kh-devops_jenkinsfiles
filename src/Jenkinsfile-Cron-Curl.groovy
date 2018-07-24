@@ -3,7 +3,7 @@ def checkStatus(respondStr){
     def jsonSlurper = new JsonSlurper()
     def respondJson = jsonSlurper.parseText(respondStr)
     assert respondJson instanceof Map
-    if(respondJson.status=="F"){
+    if(respondJson.status=="T"){
         env.FAILURE_STAGE = "Error Code: " + respond.errorCode + ", Message: " + respond.onlyMessage
         error(respond.errorCode)
     }
