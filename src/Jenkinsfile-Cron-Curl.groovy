@@ -14,8 +14,9 @@ pipeline {
         stage("Invoker") {
             steps{
                 script{
-                    sh "echo zzzzzz ${CURL_URL}"
+                    
                     def re = sh (script: "curl -X ${METHOD} ${CURL_URL}", returnStdout: true)
+                    sh "echo zzzzzz ${re}"
                     checkStatus("${re}")
                 }
             }
