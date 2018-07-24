@@ -6,7 +6,7 @@ pipeline {
         stage("Invoker") {
             steps{
                 script{
-                    def uri = initURI()
+                    sh "echho zzzzzz ${uri}"
                     def re = sh (script: "curl -X ${uri}", returnStdout: true)
                     def status = getStatus("${re}")
                     def message = getMessage("${re}")
