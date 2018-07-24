@@ -18,7 +18,7 @@ pipeline {
                 script{   
                     def re = sh (script: "curl -X ${METHOD} ${CURL_URL}", returnStdout: true)
                     sh "echo repond: ${re}"
-                    checkStatus("${re}")
+                    __check_status("${re}")
                 }
             }
         }
