@@ -4,7 +4,7 @@ def checkStatus(respondStr){
     def respondJson = jsonSlurper.parseText(respondStr)
     assert respondJson instanceof Map
     if(respondJson.status!="T"){
-        env.FAILURE_STAGE = "StatusCode: " respondJson.errorCode==null?respondJson.status:respondJson.errorCode + ", Message: " + respondJson.Message==null?respondJson.error:respondJson.Message
+        env.FAILURE_STAGE = "StatusCode: " + respondJson.errorCode==null?respondJson.status:respondJson.errorCode + ", Message: " + respondJson.Message==null?respondJson.error:respondJson.Message
         error(respondJson.Message)
     }
 }
